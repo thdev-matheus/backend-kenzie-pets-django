@@ -7,11 +7,13 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = []
+    dependencies = [
+        ("animals", "0001_initial"),
+    ]
 
     operations = [
         migrations.CreateModel(
-            name="Group",
+            name="Trait",
             fields=[
                 (
                     "id",
@@ -23,7 +25,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=20, unique=True)),
-                ("scientific_name", models.CharField(max_length=50, unique=True)),
+                (
+                    "animals",
+                    models.ManyToManyField(related_name="traits", to="animals.animal"),
+                ),
             ],
         ),
     ]

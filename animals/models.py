@@ -21,3 +21,5 @@ class Animal(models.Model):
     group = models.ForeignKey(
         "groups.Group", on_delete=models.CASCADE, related_name="animals"
     )
+
+    traits = models.ManyToManyField("traits.Trait", related_name="animals")
