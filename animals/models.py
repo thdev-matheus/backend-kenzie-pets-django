@@ -1,4 +1,4 @@
-from tokenize import group
+from math import log
 
 from django.db import models
 
@@ -23,3 +23,8 @@ class Animal(models.Model):
     )
 
     traits = models.ManyToManyField("traits.Trait", related_name="animals")
+
+    def convert_dog_age_to_human_years(self) -> float:
+        HUMAN_AGE = 16 * log(self.age) + 31
+
+        return round(HUMAN_AGE, 1)

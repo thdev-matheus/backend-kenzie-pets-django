@@ -48,3 +48,10 @@ class AnimalParamsView(APIView):
         serializer.save()
 
         return Response(serializer.data)
+
+    def delete(self, request, animal_id: int) -> Response:
+        animal = get_object_or_404(Animal, id=animal_id)
+
+        animal.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,7 +1,7 @@
-from groups.models import Group
+from math import log
+
 from groups.serializers import GroupSerializer
 from rest_framework import serializers
-from traits.models import Trait
 from traits.serializers import TraitSerializer
 
 from .models import Animal, AnimalSex
@@ -17,10 +17,14 @@ class AnimalSerializer(serializers.Serializer):
     sex = serializers.ChoiceField(
         choices=AnimalSex.choices, default=AnimalSex.NAO_INFORMADO
     )
+    age_in_human_years = serializers.SerializerMethodField(read_only=True)
 
     # definindo as relações no serializer
     group = GroupSerializer()
     traits = TraitSerializer(many=True)
+
+    def get_age_in_human_years(self, instance: Animal) -> float:
+        return instance.convert_dog_age_to_human_years()
 
     def create(self, validated_data):
         # usando os dados validados tenho acesso ao group e aos traits enviados como objeto, agora instancio eles
