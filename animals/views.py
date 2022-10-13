@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView, Response, status
+from rest_framework.views import APIView, Request, Response, status
 
 from animals.serializers import AnimalSerializer
 
@@ -7,35 +7,32 @@ from .models import Animal
 from .utils import validate_fields_request
 
 
-# criando uma classe para cada nível de endpoint
-# api/
 class AnimalView(APIView):
-    def get(self, request) -> Response:
+    def get(self, request: Request) -> Response:
         animals = Animal.objects.all()
 
         serialize = AnimalSerializer(animals, many=True)
 
         return Response(serialize.data)
 
-    def post(self, request) -> Response:
+    def post(self, request: Request) -> Response:
         serializer = AnimalSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        new_animal = serializer.save()
-        animal = AnimalSerializer(new_animal)
+        serializer.save()
 
-        return Response(animal.data, status.HTTP_201_CREATED)
+        return Response(serializer.data, status.HTTP_201_CREATED)
 
 
 class AnimalParamsView(APIView):
-    def get(self, request, animal_id: int) -> Response:
+    def get(self, request: Request, animal_id: int) -> Response:
         animal = get_object_or_404(Animal, id=animal_id)
 
         serializer = AnimalSerializer(animal)
 
         return Response(serializer.data)
 
-    def patch(self, request, animal_id: int) -> Response:
+    def patch(self, request: Request, animal_id: int) -> Response:
         animal = get_object_or_404(Animal, id=animal_id)
 
         no_valid_request = validate_fields_request(request.data)
@@ -49,7 +46,7 @@ class AnimalParamsView(APIView):
 
         return Response(serializer.data)
 
-    def delete(self, request, animal_id: int) -> Response:
+    def delete(self, request: Request, animal_id: int) -> Response:
         animal = get_object_or_404(Animal, id=animal_id)
 
         animal.delete()
