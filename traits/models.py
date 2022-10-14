@@ -1,7 +1,6 @@
 from django.db import models
-from django.forms import CharField
 
 
-# Create your models here.
+# crio a model traits herdando de models.Model
 class Trait(models.Model):
     name = models.CharField(max_length=20, unique=True)

@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  pyapi:
+    tty: true
+    container_name: pyapi
+    image: python:3.10.7
+    build: .
+    ports:
+      - 8005:8000
+    
